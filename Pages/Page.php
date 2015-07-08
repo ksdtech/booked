@@ -1,6 +1,7 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
+Copyright 2014 Jason Gerfen
 
 This file is part of Booked Scheduler.
 
@@ -40,6 +41,8 @@ abstract class Page implements IPage
 
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
+		$this->SetSecurityHeaders();
+
 		$this->path = str_repeat('../', $pageDepth);
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
@@ -54,7 +57,9 @@ abstract class Page implements IPage
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
 		$this->smarty->assign('HtmlLang', $resources->HtmlLang);
 		$this->smarty->assign('HtmlTextDirection', $resources->TextDirection);
-		$this->smarty->assign('Title', 'Booked - ' . $resources->GetString($titleKey));
+		$appTitle = Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE);
+		$pageTile =  $resources->GetString($titleKey);
+		$this->smarty->assign('Title', (empty($appTitle) ? 'Booked' : $appTitle) . (empty($pageTile) ? '' : ' - ' . $pageTile));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 
 		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
@@ -293,7 +298,14 @@ abstract class Page implements IPage
 	 */
 	protected function Display($templateName)
 	{
-		$this->smarty->display($templateName);
+		if (!$this->InMaintenanceMode())
+		{
+			$this->smarty->display($templateName);
+		}
+		else
+		{
+			$this->smarty->display('maintenance.tpl');
+		}
 	}
 
 	protected function DisplayCsv($templateName, $fileName)
@@ -341,4 +353,23 @@ abstract class Page implements IPage
 
 		return !empty($timeout);
     }
+
+	private function InMaintenanceMode()
+	{
+		return is_file(ROOT_DIR . 'maint.txt');
+	}
+
+
+	private function SetSecurityHeaders()
+	{
+		$config = Configuration::Instance();
+		if ($config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_HEADERS, new BooleanConverter()))
+		{
+			header('Strict-Transport-Security: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_STRICT_TRANSPORT));
+			header('X-Frame: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_FRAME));
+			header('X-Xss: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_XSS));
+			header('X-Content-Type: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_CONTENT_TYPE));
+			header('Content-Security-Policy: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_CONTENT_SECURITY_POLICY));
+		}
+	}
 }

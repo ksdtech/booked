@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -151,7 +151,8 @@ class LoginPresenter
 		else
 		{
 			$defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
-			$this->_page->Redirect(Pages::UrlFromId($defaultId));
+			$url = Pages::UrlFromId($defaultId);
+			$this->_page->Redirect(empty($url) ? Pages::UrlFromId(Pages::DEFAULT_HOMEPAGE_ID) : $url);
 		}
 	}
 

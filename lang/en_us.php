@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -96,7 +96,7 @@ class en_us extends Language
 		$strings['Announcements'] = 'Announcements';
 		$strings['NoUpcomingReservations'] = 'You have no upcoming reservations';
 		$strings['UpcomingReservations'] = 'Upcoming Reservations';
-		$strings['AllNoUpcomingReservations'] = 'There are no upcoming reservations';
+		$strings['AllNoUpcomingReservations'] = 'There are no upcoming reservations in next %s days';
 		$strings['AllUpcomingReservations'] = 'All Upcoming Reservations';
 		$strings['ShowHide'] = 'Show/Hide';
 		$strings['Error'] = 'Error';
@@ -193,6 +193,7 @@ class en_us extends Language
 		$strings['ResourcePermissions'] = 'Resource Permissions';
 		$strings['Reservations'] = 'Reservations';
 		$strings['Groups'] = 'Groups';
+		$strings['Users'] = 'Users';
 		$strings['ResetPassword'] = 'Reset Password';
 		$strings['AllUsers'] = 'All Users';
 		$strings['AllGroups'] = 'All Groups';
@@ -476,7 +477,7 @@ class en_us extends Language
 		$strings['ResourceGroupHelp1'] = 'Drag and drop resource groups to reorganize.';
 		$strings['ResourceGroupHelp2'] = 'Right click a resource group name for additional actions.';
 		$strings['ResourceGroupHelp3'] = 'Drag and drop resources to add them to groups.';
-		$strings['ResourceGroupWarning'] = 'If using resource groups, each resource must be assigned to at least one group. Unassinged resources will not be able to be reserved.';
+		$strings['ResourceGroupWarning'] = 'If using resource groups, each resource must be assigned to at least one group. Unassigned resources will not be able to be reserved.';
 		$strings['ResourceType'] = 'Resource Type';
 		$strings['AppliesTo'] = 'Applies To';
 		$strings['UniquePerInstance'] = 'Unique Per Instance';
@@ -496,6 +497,13 @@ class en_us extends Language
 		$strings['Unchanged'] = 'Unchanged';
 		$strings['Common'] = 'Common';
 		$strings['AdvancedFilter'] = 'Advanced Filter';
+		$strings['AllParticipants'] = 'All Participants';
+		$strings['ResourceAvailability'] = 'Resource Availability';
+		$strings['UnavailableAllDay'] = 'Unavailable All Day';
+		$strings['AvailableUntil'] = 'Available Until';
+		$strings['AvailableBeginningAt'] = 'Available Beginning At';
+		$strings['AllowParticipantsToJoin'] = 'Allow Participants To Join';
+		$strings['JoinThisReservation'] = 'Join This Reservation';
 		// End Strings
 
 		// Install
@@ -568,6 +576,9 @@ class en_us extends Language
 		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
 		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
 		$strings['NoReservationAccess'] = 'You are not allowed to change this reservation.';
+		$strings['PasswordControlledExternallyError'] = 'Your password is controlled by an external system and cannot be updated here.';
+		$strings['NoResources'] = 'You have not added any resources.';
+		$strings['ParticipationNotAllowed'] = 'You are not allowed to join this reservation.';
 		// End Errors
 
 		// Page Titles
@@ -654,6 +665,7 @@ class en_us extends Language
 		$strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
 		$strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
 		$strings['ReservationDeleteAdminSubject'] = 'Notification: A Reservation Was Removed';
+		$strings['ReservationApprovalAdminSubject'] = 'Notification: Reservation Requires Your Approval';
 		$strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
 		$strings['ParticipantDeletedSubject'] = 'Reservation Removed';
 		$strings['InviteeAddedSubject'] = 'Reservation Invitation';

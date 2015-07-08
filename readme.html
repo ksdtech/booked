@@ -23,6 +23,83 @@ Booked application help is available from the Help menu item.
 
 <h2>Release Notes</h2>
 
+<h4>2.5.15</h4>
+<ul>
+    <li>Added ability for users to join reservations without being invited</li>
+    <li>Upgraded CAS library to 1.3.3</li>
+    <li>Added Active Directory option to sync group membership into Booked</li>
+    <li>Added user details popup</li>
+    <li>Added ability to manage user and group permissions from resource management page</li>
+    <li>Fixed bug preventing recurring reservations from being deleted in management page</li>
+    <li>Fixed bug incorrectly grouping recurring reservations on calendar views</li>
+    <li>Updated Italian language</li>
+    <li>Updated Spanish language</li>
+</ul>
+
+<h4>2.5.14</h4>
+<ul>
+    <li>Added notice to schedule when no resources have been added</li>
+    <li>Added emails to participants and invitees when a reservation is updated</li>
+    <li>Added resource image to reservation email</li>
+    <li>Added ability to set default homepage for new users</li>
+    <li>Added dashboard item for current resource availability</li>
+    <li>Fixed bug displaying wrong reservation dates on reservation save confirmation message</li>
+    <li>Fixed bug on view schedule page when using daily layouts</li>
+    <li>Fixed bug preventing individual reservations from being added to external calendars</li>
+    <li>Fixed bug which did not check Sunday checkbox on recurring reservations</li>
+    <li>Fixed bug on dst change preventing all reservations on that day</li>
+    <li>Fixed bug causing permission updates performed by schedule admins to wipe out certain permissions</li>
+    <li>Updated Italian language pack</li>
+    <li>Updated Spanish language pack</li>
+</ul>
+
+<h4>2.5.13</h4>
+<ul>
+    <li>Fixed bug preventing reservations from being added to Outlook</li>
+    <li>Fixed bug preventing accessories from showing in reservation popup</li>
+    <li>Fixed bug preventing resource filter from working on view schedule</li>
+    <li>Added Drupal authentication plugin (Drupal 7.x with MySQL only)</li>
+    <li>Added ability to display participant and invitee lists in the reservation label</li>
+    <li>Applied patch for HTTP security headers</li>
+    <li>Updated Italian language</li>
+</ul>
+
+<h4>2.5.12</h4>
+<ul>
+    <li>Fixed English admin help page</li>
+</ul>
+
+<h4>2.5.11</h4>
+<ul>
+    <li>Fixed issue that was sending approval request emails on every reservation create/update if approval emails were enabled</li>
+</ul>
+
+<h4>2.5.10</h4>
+<ul>
+    <li>Fixed issue sending email from *nix servers</li>
+</ul>
+
+<h4>2.5.9</h4>
+<ul>
+    <li>Added custom attributes to reports</li>
+    <li>Added resource groups to calendar views</li>
+    <li>Added ability to enter maintenance mode</li>
+    <li>Added ability manage user groups through API</li>
+    <li>Added more options for customizing the reservation slot label, including using custom attributes</li>
+    <li>Added ability to customize reservation label for My Calendar, Resource Calendar, ICS feeds, RSS feeds and the reservation popup</li>
+    <li>Added list of dates and resources to reservation confirmation message</li>
+    <li>Added ability to receive reservation approval request emails</li>
+    <li>Added API to get schedule slots</li>
+    <li>Added finer-grained control over what profile values can be managed through Booked when using an authentication plugin</li>
+    <li>Reduced the size of the bookings page</li>
+    <li>Fixed bug graying out resources and dates when user and schedule timezone don't match</li>
+    <li>Fixed bug handling non-UTC dates in API</li>
+    <li>Fixed bug performing case sensitive match when checking if user is admin</li>
+    <li>Fixed bug for GetAvailability API</li>
+    <li>Updated German language files</li>
+    <li>Updated Portuguese language files</li>
+</ul>
+
 <h4>2.5.8</h4>
 <ul>
     <li>Added schedule and resource filter to My Calendar</li>
@@ -30,6 +107,7 @@ Booked application help is available from the Help menu item.
     <li>Reduced the size of the bookings page by ~35%</li>
     <li>Updated German language files</li>
     <li>Updated Japanese language files</li>
+    <li>Updated Portuguese language files</li>
 </ul>
 
 <h4>2.5.7</h4>

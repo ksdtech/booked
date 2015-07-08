@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -724,6 +724,17 @@ class MigrationPresenter
 	private function MigrateReservations(Database $legacyDatabase, Database $currentDatabase)
 	{
 		$reservationsMigrated = MigrationSession::GetLastReservationRow();
+		$getMigratedCount = new AdHocCommand('SELECT
+				(select count(*) from reservation_series where legacyid is not null) +
+				(select count(*) from blackout_series where legacyid is not null )
+				as count');
+
+		$reader = ServiceLocator::GetDatabase()->Query($getMigratedCount);
+		if ($row = $reader->GetRow())
+		{
+			$reservationsMigrated = $row['count'];
+		}
+
 		Log::Debug('Start migrating reservations. Starting at row %s', $reservationsMigrated);
 
 		$reservationRepository = new ReservationRepository();
@@ -892,10 +903,10 @@ class MigrationPresenter
 
 		Log::Debug('Done migrating reservations (%s reservations)', $reservationsMigrated);
 		$getLegacyCount = new AdHocCommand('select count(*) as count from reservations');
-		$getMigratedCount = new AdHocCommand('SELECT
-		(select count(*) from reservation_series where legacyid is not null) +
-		(select count(*) from blackout_series where legacyid is not null )
-		as count');
+//		$getMigratedCount = new AdHocCommand('SELECT
+//		(select count(*) from reservation_series where legacyid is not null) +
+//		(select count(*) from blackout_series where legacyid is not null )
+//		as count');
 
 		$progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
 		$this->page->SetProgress($progressCounts);

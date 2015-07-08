@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -29,7 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>&nbsp;</td>
 				{foreach from=$BoundDates item=date}
 					{assign var=class value=""}
-					{if $TodaysDate->DateEquals($date) eq true}
+					{if $date->DateEquals($TodaysDate)}
 						{assign var=class value="today-custom"}
 					{/if}
 					<td class="resdate-custom resdate {$class}">{formatdate date=$date key="schedule_daily"}</td>
@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</td>
 						{else}
 							{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-							<td class="reservable clickres slot" ref="{$href}" data-href="{$Href}">&nbsp;</td>
+							<td class="reservable clickres slot" ref="{$href}" data-href="{$href}">&nbsp;</td>
 						{/if}
 					{/foreach}
 				</tr>

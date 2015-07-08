@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/admin.css,scripts/css/colorpicker.css'}
 
-<h1>{translate key=ManageUsers}</h1>
+<h1>{translate key=ManageUsers} {html_image src="question-button.png" id="help-prompt" ref="help-users"}</h1>
 
 <div style="padding: 10px 0px;">
 	<table>
@@ -90,14 +90,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 			<td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
 		</tr>
-		{assign var=attributes value=$AttributeList->GetAttributes($id)}
+		{assign var=attributes value=$AttributeList}
 		{if $attributes|count > 0}
 			<tr>
 				<td class="id"><input type="hidden" class="id" value="{$id}"/></td>
-				<td colspan="16" class="{$rowCss} customAttributes" userId="{$id}">
+				<td colspan="17" class="{$rowCss} customAttributes" userId="{$id}">
 						<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">
-							<h3>{translate key=AdditionalAttributes} <a href="#"
-																		class="update changeAttributes">{translate key=Edit}</a>
+							<h3>{translate key=AdditionalAttributes}
+								<a href="#" class="update changeAttributes">{translate key=Edit}</a>
 							</h3>
 
 							<div class="validationSummary">
@@ -109,9 +109,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div>
 								<ul>
 									{foreach from=$attributes item=attribute}
+										{assign var="attributeValue" value=$user->GetAttributeValue($attribute->Id())}
 										<li class="customAttribute" attributeId="{$attribute->Id()}">
-											<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-											<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
+											<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute value=$attributeValue readonly=true}</div>
+											<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute value=$attributeValue}
 										</li>
 									{/foreach}
 								</ul>
@@ -202,7 +203,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="customAttributes">
 				<ul>
-					{assign var=attributes value=$AttributeList->GetAttributes()}
+					{assign var=attributes value=$AttributeList}
 					{foreach from=$attributes item=attribute}
 						<li class="customAttribute">
 							{control type="AttributeControl" attribute=$attribute algin=vertical}
@@ -337,6 +338,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="admin/user.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
 {jsfile src="js/colorpicker.js"}
+{jsfile src="admin/help.js"}
 
 <script type="text/javascript">
 	$(document).ready(function ()

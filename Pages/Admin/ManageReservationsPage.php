@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -272,6 +272,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		$this->pageablePage = new PageablePage($this);
 
 		$this->SetCanUpdateResourceStatus(true);
+		$this->SetPageId('manage-reservations');
 	}
 
 	public function ProcessAction()
@@ -652,5 +653,10 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function BindAttributeUpdateErrors($errors)
 	{
 		$this->SetJson(null, $errors);
+	}
+
+	protected function SetPageId($pageId)
+	{
+		$this->Set('PageId', $pageId);
 	}
 }

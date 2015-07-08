@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -211,6 +211,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 {
 	protected $ScheduleStyle = ScheduleStyle::Standard;
 
+	private $resourceCount = 0;
+
 	/**
 	 * @var SchedulePresenter
 	 */
@@ -248,6 +250,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$endLoad = microtime(true);
 
+		if ($user->IsAdmin && $this->resourceCount == 0)
+		{
+			$this->Set('ShowResourceWarning', true);
+		}
+
 		$this->Set('SlotLabelFactory', $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory($user));
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 
@@ -265,6 +272,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$load = $endLoad - $start;
 		$display = $endDisplay - $endLoad;
 		$total = $endDisplay - $start;
+
 		Log::Debug('Schedule took %s sec to load, %s sec to render. Total %s sec', $load, $display, $total);
 	}
 
@@ -301,6 +309,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function SetResources($resources)
 	{
+		$this->resourceCount = count($resources);
 		$this->Set('Resources', $resources);
 	}
 

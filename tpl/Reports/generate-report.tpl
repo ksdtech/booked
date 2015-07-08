@@ -1,5 +1,5 @@
 {*
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -114,8 +114,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<a href="#" class="all">{translate key=AllUsers}</a>
 					<a href="#" class="selected filter-off"></a>
 					<input id="user-filter" type="text" class="textbox filter-input filter-off"/>
-				{html_image src="minus-gray.png" class="clear filter-off"}
+				{html_image src="minus-gray.png" class="clear-filter filter-off"}
 					<input id="user_id" class="filter-id" type="hidden" {formname key=USER_ID}/>
+				</div>
+
+				<div id="participant-filter-div" class="link-filter">
+					<a href="#" class="all">{translate key=AllParticipants}</a>
+					<a href="#" class="selected filter-off"></a>
+					<input id="participant-filter" type="text" class="textbox filter-input filter-off"/>
+				{html_image src="minus-gray.png" class="clear-filter filter-off"}
+					<input id="participant_id" class="filter-id" type="hidden" {formname key=PARTICIPANT_ID}/>
 				</div>
 			</div>
 		</div>

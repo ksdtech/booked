@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,8 +25,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {if $ShouldLogout}
 	<meta http-equiv="REFRESH" content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
 {/if}
-	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
-	<link rel="icon" href="{$Path}favicon.ico"/>
+	<link rel="shortcut icon" href="{$Path}favicon.png"/>
+	<link rel="icon" href="{$Path}favicon.png"/>
 	{if $UseLocalJquery}
 		{jsfile src="js/jquery-1.8.2.min.js"}
 		{jsfile src="js/jquery-ui-1.9.0.custom.min.js"}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2014 Nick Korbel
+ * Copyright 2011-2015 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -69,6 +69,11 @@ interface IPersonalCalendarPage extends IActionPage
 	 * @param int $firstDay
 	 */
 	public function SetFirstDay($firstDay);
+
+	/**
+	 * @param ResourceGroup $selectedGroup
+	 */
+	public function BindSelectedGroup($selectedGroup);
 }
 
 class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
@@ -194,6 +199,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	{
 		$this->Set('filters', $filters);
 		$this->Set('IsAccessible', !$filters->IsEmpty());
+		$this->Set('ResourceGroupsAsJson', json_encode($filters->GetResourceGroupTree()->GetGroups(false)));;
 	}
 
 	public function GetScheduleId()
@@ -219,6 +225,12 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	public function SetFirstDay($firstDay)
 	{
 		$this->Set('FirstDay', $firstDay == Schedule::Today ? 0 : $firstDay);
+	}
+
+	public function BindSelectedGroup($selectedGroup)
+	{
+		$this->Set('GroupName', $selectedGroup->name);
+		$this->Set('SelectedGroupNode', $selectedGroup->id);
 	}
 }
 

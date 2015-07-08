@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -75,14 +75,16 @@ interface IParticipationPage
 class ParticipationPage extends SecurePage implements IParticipationPage
 {
 	/**
-	 * @var \ParticipationPresenter
+	 * @var ParticipationPresenter
 	 */
 	private $presenter;
 
 	public function __construct()
 	{
 	    parent::__construct('OpenInvitations');
-		$this->presenter = new ParticipationPresenter($this, new ReservationRepository(), new ReservationViewRepository());
+		$rules = array(new ReservationStartTimeRule( new ScheduleRepository()), new ResourceMinimumNoticeRule(), new ResourceMaximumNoticeRule());
+
+		$this->presenter = new ParticipationPresenter($this, new ReservationRepository(), new ReservationViewRepository(), $rules);
 	}
 
 	public function PageLoad()
@@ -138,4 +140,3 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 		$this->Set('ActionResult', $result);
 	}
 }
-?>

@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl' cssFiles='css/admin.css,scripts/css/colorbox.css'}
 
-<h1>{translate key='ManageResources'}</h1>
+<h1>{translate key='ManageResources'} {html_image src="question-button.png" id="help-prompt" ref="help-resources"}</h1>
 
 <div class="horizontal-list label-top filterTable main-div-shadow" id="filterTable">
 	<form id="filterForm">
@@ -309,6 +309,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
+		<div><h5>{translate key='Permissions'}</h5> <a href="#" class="update changeUsers">{translate key=Users}</a> | <a href="#" class="update changeGroups">{translate key=Groups}</a></div>
 	</div>
 	{assign var=attributes value=$AttributeList->GetAttributes($id)}
 	{if $attributes|count > 0}
@@ -960,12 +961,46 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </form>
 </div>
 
+
+<div id="userDialog" class="dialog" title="{translate key=Users}">
+	<label>{translate key=AddUser} <input type="text" id="userSearch" class="textbox" size="40" /></label> <a href="#" id="browseUsers">{translate key=Browse}</a>
+	<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
+	<h4><span id="totalUsers"></span> {translate key=Users}</h4>
+	<div id="resourceUserList"></div>
+</div>
+
+<form id="removeUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveUserPermission}">
+	<input type="hidden" id="removeUserId" {formname key=USER_ID} />
+</form>
+
+<form id="addUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddUserPermission}">
+	<input type="hidden" id="addUserId" {formname key=USER_ID} />
+</form>
+
+<div id="groupDialog" class="dialog" title="{translate key=Groups}">
+	<label>{translate key=AddGroup} <input type="text" id="groupSearch" class="textbox" size="40"/> <a href="#" id="browseGroups">{translate key=AllGroups}</a></label>
+	<div id="allGroups" style="display:none;" class="dialog" title="{translate key=AllGroups}"></div>
+	<h4><span id="totalGroups"></span> {translate key=Groups}</h4>
+	<div id="resourceGroupList"></div>
+</div>
+
+<form id="removeGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveGroupPermission}">
+	<input type="hidden" id="removeGroupId" {formname key=GROUP_ID} />
+</form>
+
+<form id="addGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddGroupPermission}">
+	<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
+</form>
+
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 {jsfile src="js/jquery.watermark.min.js"}
 {jsfile src="js/jquery.colorbox-min.js"}
 {jsfile src="admin/edit.js"}
 {jsfile src="admin/resource.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="admin/help.js"}
+{jsfile src="autocomplete.js"}
 
 <script type="text/javascript">
 
@@ -980,7 +1015,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		var opts = {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
 			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-			actions: actions
+			actions: actions,
+			userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::User}",
+			groupAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::Group}",
+			permissionsUrl: '{$smarty.server.SCRIPT_NAME}'
 		};
 
 		var resourceManagement = new ResourceManagement(opts);

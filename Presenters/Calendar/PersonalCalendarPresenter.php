@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2014 Nick Korbel
+ * Copyright 2011-2015 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -116,6 +116,7 @@ class PersonalCalendarPresenter extends ActionPresenter
 			$day = $defaultDate->Day();
 		}
 
+
 		$schedules = $this->scheduleRepository->GetAll();
 		$showInaccessible = Configuration::Instance()
 										 ->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
@@ -125,15 +126,35 @@ class PersonalCalendarPresenter extends ActionPresenter
 		$selectedSchedule = $this->GetDefaultSchedule($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
 
+		$resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
+
+		if (!empty($selectedGroupId))
+		{
+			$tempResources = array();
+			$resourceIds = $resourceGroups->GetResourceIds($selectedGroupId);
+			$selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
+			$this->page->BindSelectedGroup($selectedGroup);
+
+			foreach ($resources as $resource)
+			{
+				if (in_array($resource->GetId(), $resourceIds))
+				{
+					$tempResources[] = $resource;
+				}
+			}
+
+			$resources = $tempResources;
+		}
+
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone, $selectedSchedule->GetWeekdayStart());
 		$reservations = $this->reservationRepository->GetReservationList($calendar->FirstDay(), $calendar->LastDay()->AddDays(1), $userSession->UserId,
 																		 ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);
-		$calendar->AddReservations(CalendarReservation::FromViewList($reservations, $timezone));
+		$calendar->AddReservations(CalendarReservation::FromViewList($reservations, $timezone, $userSession, true));
 		$this->page->BindCalendar($calendar);
 
 		$this->page->SetDisplayDate($calendar->FirstDay());
 
-		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId));
+		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId, $resourceGroups));
 
 		$this->page->SetScheduleId($selectedScheduleId);
 		$this->page->SetResourceId($selectedResourceId);

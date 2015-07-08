@@ -503,7 +503,7 @@ function Reservation(opts)
 
 			var newTime = dateHelper.AddTimeDiff(diff,elements.endTime.val());
 
-			console.log(newTime);
+			//console.log(newTime);
 			elements.endTime.val(newTime);
 			elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
@@ -710,6 +710,7 @@ function Reservation(opts)
 	changeUser.chooseUser = function (id, name)
 	{
 		elements.userName.text(name);
+		elements.userName.attr('data-userid', id);
 		elements.userId.val(id);
 
 		participation.removeParticipant(_ownerId);
@@ -759,13 +760,13 @@ function Reservation(opts)
 		}
 
 		var item = '<li>' +
-				'<a href="#" class="remove"><img src="img/user-minus.png" alt="Remove"/></a> ' +
+				'<a href="#" class="remove"><img src="img/user-minus.png" alt="Remove"/></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' +
 				name +
-				'<input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
+				'</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
 				'</li>';
 
 		elements.participantList.find("ul").append(item);
-
+		$('.bindableUser').bindUserDetails();
 		participation.addedUsers.push(userId);
 	};
 
@@ -787,13 +788,13 @@ function Reservation(opts)
 		}
 
 		var item = '<li>' +
-				'<a href="#" class="remove"><img src="img/user-minus.png" alt="Remove"/></a> ' +
+				'<a href="#" class="remove"><img src="img/user-minus.png" alt="Remove"/></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' +
 				name +
-				'<input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' +
+				'</a><input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' +
 				'</li>';
 
 		elements.inviteeList.find("ul").append(item);
-
+		$('.bindableUser').bindUserDetails();
 		participation.addedUsers.push(userId);
 	};
 

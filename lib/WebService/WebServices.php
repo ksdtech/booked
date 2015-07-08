@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -44,6 +44,7 @@ class WebServices
 	const GetResource = 'get_resource';
 	const GetResourceAvailability = 'get_resource_availability';
 	const GetSchedule = 'get_schedule';
+	const GetScheduleSlots = 'get_schedule_reservations';
 	const GetUser = 'get_user';
 	const UpdateReservation = 'update_reservation';
 	const UpdateResource = 'update_resource';

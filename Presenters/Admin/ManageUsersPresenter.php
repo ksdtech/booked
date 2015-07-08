@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -193,27 +193,12 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$groups = $this->groupViewRepository->GetList();
 		$this->page->BindGroups($groups->Results());
 
-		$resources = array();
-
 		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
 
-		$allResources = $this->resourceRepository->GetResourceList();
-		foreach ($allResources as $resource)
-		{
-			if ($user->IsResourceAdminFor($resource))
-			{
-				$resources[] = $resource;
-			}
-		}
+		$resources = $this->GetResourcesThatCurrentUserCanAdminister($user);
 		$this->page->BindResources($resources);
 
-		$userIds = array();
-		/** @var $user UserItemView */
-		foreach ($userList->Results() as $user)
-		{
-			$userIds[] = $user->Id;
-		}
-		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, $userIds);
+		$attributeList = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
 		$this->page->BindAttributeList($attributeList);
 	}
 
@@ -233,7 +218,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function AddUser()
 	{
-		$userId = $this->manageUsersService->AddUser(
+		$defaultHomePageId = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE, new IntConverter());
+		$user = $this->manageUsersService->AddUser(
 			$this->page->GetUserName(),
 			$this->page->GetEmail(),
 			$this->page->GetFirstName(),
@@ -241,10 +227,11 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->page->GetPassword(),
 			$this->page->GetTimezone(),
 			Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-			Pages::DEFAULT_HOMEPAGE_ID,
+			empty($defaultHomePageId) ? Pages::DEFAULT_HOMEPAGE_ID : $defaultHomePageId,
 			array(),
 			$this->GetAttributeValues());
 
+		$userId = $user->Id();
 		$groupId = $this->page->GetUserGroup();
 
 		if (!empty($groupId))
@@ -283,6 +270,16 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function ChangePermissions()
 	{
+		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+		$resources = $this->GetResourcesThatCurrentUserCanAdminister($user);
+
+		$acceptableResourceIds = array();
+
+		foreach ($resources as $resource)
+		{
+			$acceptableResourceIds[] = $resource->GetId();
+		}
+
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		$allowedResources = array();
 
@@ -290,7 +287,11 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		{
 			$allowedResources = $this->page->GetAllowedResourceIds();
 		}
-		$user->ChangePermissions($allowedResources);
+
+		$currentResources = $user->AllowedResourceIds();
+		$toRemainUnchanged = array_diff($currentResources, $acceptableResourceIds);
+
+		$user->ChangePermissions(array_merge($toRemainUnchanged, $allowedResources));
 		$this->userRepository->Update($user);
 	}
 
@@ -414,6 +415,22 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->userRepository->Update($user);
 
 	}
-}
 
-?>
+	/**
+	 * @param User $user
+	 * @return BookableResource[]
+	 */
+	private function GetResourcesThatCurrentUserCanAdminister($user)
+	{
+		$resources = array();
+		$allResources = $this->resourceRepository->GetResourceList();
+		foreach ($allResources as $resource)
+		{
+			if ($user->IsResourceAdminFor($resource))
+			{
+				$resources[] = $resource;
+			}
+		}
+		return $resources;
+	}
+}

@@ -27,7 +27,15 @@ function Dashboard(opts)
 				}
 			});
 		});
-		
+
+		$('.resourceNameSelector').each(function ()
+		{
+			$(this).bindResourceDetails($(this).attr('resource-id'));
+			$(this).click(function(e){
+				e.preventDefault();
+			});
+		});
+
 		$(".reservation").each(function() {
 			var refNum = $(this).attr('id');
 

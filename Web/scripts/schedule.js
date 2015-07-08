@@ -12,12 +12,6 @@ function Schedule(opts, resourceGroups)
 		this.initResourceFilter();
 
 		var reservations = $('#reservations');
-//		reservations.delegate('.clickres:not(.reserved)', 'hover', function ()
-//		{
-//			$(this).siblings('.resourcename').toggleClass('hilite');
-//			var ref = $(this).attr('ref');
-//			reservations.find('td[ref="' + ref + '"]').toggleClass('hilite');
-//		});
 
 		reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function ()
 		{

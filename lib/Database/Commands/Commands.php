@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -202,7 +202,8 @@ class AddReservationSeriesCommand extends SqlCommand
 								$repeatOptions,
 								$reservationTypeId,
 								$statusId,
-								$ownerId
+								$ownerId,
+								$allowParticipation
 	)
 	{
 		parent::__construct(Queries::ADD_RESERVATION_SERIES);
@@ -215,6 +216,7 @@ class AddReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeId));
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
+		$this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
 	}
 }
 
@@ -1091,6 +1093,16 @@ class GetLayoutCommand extends SqlCommand
 	}
 }
 
+class GetNextReservationsCommand extends SqlCommand
+{
+	public function __construct(Date $earliestDate, Date $lastDate)
+	{
+		parent::__construct(Queries::GET_NEXT_RESERVATIONS);
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $earliestDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $lastDate->ToDatabase()));
+	}
+}
+
 class GetReminderByUserCommand extends SqlCommand
 {
 	public function __construct($user_id)
@@ -1437,6 +1449,25 @@ class GetUserSessionByUserIdCommand extends SqlCommand
 	}
 }
 
+class GetResourceGroupPermissionCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::GET_RESOURCE_GROUP_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
+class GetResourceUserPermissionCommand extends SqlCommand
+{
+	public function __construct($resourceId, $accountStatusId = AccountStatus::ACTIVE)
+	{
+		parent::__construct(Queries::GET_RESOURCE_USER_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $accountStatusId));
+	}
+}
+
 class LoginCommand extends SqlCommand
 {
 	public function __construct($username)
@@ -1688,6 +1719,15 @@ class SelectUserGroupPermissions extends SqlCommand
 	}
 }
 
+class SelectUserGroupResourceAdminPermissions extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_USER_ADMIN_GROUP_RESOURCE_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
 class SetDefaultScheduleCommand extends SqlCommand
 {
 	public function __construct($scheduleId)
@@ -1809,7 +1849,8 @@ class UpdateReservationSeriesCommand extends SqlCommand
 								$repeatOptions,
 								Date $dateModified,
 								$statusId,
-								$ownerId
+								$ownerId,
+								$allowParticipation
 	)
 	{
 		parent::__construct(Queries::UPDATE_RESERVATION_SERIES);
@@ -1822,6 +1863,7 @@ class UpdateReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
+		$this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
 	}
 }
 

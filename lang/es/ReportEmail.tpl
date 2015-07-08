@@ -1,6 +1,5 @@
-<?php
-/**
-Copyright 2012-2014 Nick Korbel
+{*
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,22 +15,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
+*}
+Se adjunta un informe de Booked Scheduler.<br/><br/>
 
-class WebServiceDate
-{
-	/**
-	 * @param string $dateString
-	 * @param UserSession $session
-	 * @return Date
-	 */
-	public static function GetDate($dateString, UserSession $session)
-	{
-		if (BookedStringHelper::Contains($dateString, 'T'))
-		{
-			return Date::ParseExact($dateString);
-		}
-
-		return Date::Parse($dateString, $session->Timezone);
-	}
-}
+<a href="{$ScriptUrl}">Iniciar sesión en Booked Scheduler</a>

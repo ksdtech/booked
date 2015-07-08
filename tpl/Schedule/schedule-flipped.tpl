@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		{foreach from=$BoundDates item=date}
 			{$smarty.capture.resources}
-			{if $TodaysDate->DateEquals($date)}
+			{if $date->DateEquals($TodaysDate)}
                 <tr class="today">
 			{else}
             	<tr>

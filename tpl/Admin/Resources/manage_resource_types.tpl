@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
-<h1>{translate key='ManageResourceTypes'}</h1>
+<h1>{translate key='ManageResourceTypes'} {html_image src="question-button.png" id="help-prompt" ref="help-resource-types"}</h1>
 
 <div id="globalError" class="error" style="display:none"></div>
 
@@ -141,6 +141,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="admin/edit.js"}
 {jsfile src="admin/resource-types.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="admin/help.js"}
 
 <script type="text/javascript">
 
