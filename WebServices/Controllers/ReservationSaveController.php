@@ -371,6 +371,16 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		$this->recurrenceRule = empty($request->recurrenceRule) ? RecurrenceRequestResponse::Null() : $request->recurrenceRule;
 	}
 
+	// PFZ this required function was left out of 2.5.15
+	/**
+	 * @return bool
+	 */
+	public function GetAllowParticipation()
+	{
+		// return $this->allowParticipation;
+		return true;
+	}
+	
 	public function ReferenceNumber()
 	{
 		return $this->_createdReferenceNumber;
